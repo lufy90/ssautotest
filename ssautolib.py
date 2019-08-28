@@ -51,10 +51,10 @@ def get_module_names_by_path(path, prefix=''):
   '''get a list of all modules in path'''
   module_names = []
 
-  def _get_module(subpath, prefix, module_names):
-    for md in pkgutil.iter_modules(path=subpath, prefix=prefix):
+  def _get_module(_path, _prefix, _names):
+    for md in pkgutil.iter_modules(path=[_path], prefix=_prefix):
       if md[2]:
-        _get_module(os.path.join(subpath, md[1]), md[1]+'.', module_names)
+        _get_module(os.path.join(_path, md[1]), md[1]+'.', _names)
       else:
          module_names.append(md[1])
   _get_module(path, prefix, module_names)

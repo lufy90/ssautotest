@@ -47,7 +47,7 @@ def ssissubclass(a,b):
   except TypeError:
     return False
 
-def get_module_names_by_path(path, prefix=''):
+def get_module_names_by_path(path):
   '''get a list of all modules in path'''
   module_names = []
 

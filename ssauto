@@ -1,0 +1,83 @@
+#!/bin/env python36
+# filename: ssauto.py
+# Author: lufei
+# Date: 20190815 13:42:07
+
+
+from cmdmain import Main, Options
+import getopt
+import sys
+from setting import *
+
+
+class SsautoOptions(Options):
+  '''ssauto command line options'''
+  def __init__(self, name, args=None):
+    super(SsautoOptions, self).__init__(name, args)
+    self.call_options = {
+      'help' : self.usage,
+      'run'  : self.run,
+      'list' : self.list,
+      'create' : self.createcase,
+    }
+
+  def usage(self, args=None):
+    '''print this help text'''
+    if not args:
+      print(self.__doc__)
+    else:
+      for  i in args:
+        print(self.call_options[i].__doc__)
+
+
+  def run(self, args=None):
+    '''run test'''
+    pass
+
+  def list(self, args=None):
+    '''list tests'''
+    try:
+      args = getopt.getopt(args, 'd:hp:v', 
+              ['directory', 'help', 'priority', 'verbose'])
+    except getopt.GetoptError as e:
+      print(e)
+      print('list.help')
+      sys.exit(2)
+    # initialize variables.
+    directory = TCASEDIR
+    priority = 0
+    verbose = False
+    for opt, arg in args[0]:
+      if opt in ('-h', '--help'):
+        print('list.help')
+        sys.exit(0)
+      elif opt in ('-d', '--directory'):
+        directory = arg
+      elif opt in ('-p', '--priority'):
+        priority = arg
+      elif opt in ('-v', '--verbose'):
+        verbose = True
+
+
+    for d in args[1]:
+      list_subclasses(BASETCASE, d)
+
+  def createcase(self,args=None):
+    pass
+
+
+class mdin2():
+  '''ssauto main'''
+  pass
+
+class ssauto():
+  '''ssauto class'''
+  def execute(self):
+    parser = argparse.ArgumentParser(description='A super simple test driver')
+    parser.add_argument('run', metavar='A', type=int, )
+
+if __name__ == '__main__':
+  main = Main()
+  main.execute(SsautoOptions)
+
+

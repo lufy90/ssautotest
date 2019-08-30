@@ -3,7 +3,7 @@
 # Author: lufei
 # Date: 20190829 09:49:12
 
-from base import Testcase
+from test import Testcase
 import os
 
 BASETCASE=Testcase

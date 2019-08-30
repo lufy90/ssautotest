@@ -1,5 +1,5 @@
 #!/bin/env python36
-# filename: ssauto.py
+# filename: ssauto
 # Author: lufei
 # Date: 20190815 13:42:07
 
@@ -8,6 +8,7 @@ from cmdmain import Main, Options
 import getopt
 import sys
 from setting import *
+from ssautolib import get_module_names_by_path
 
 
 class SsautoOptions(Options):
@@ -36,20 +37,25 @@ class SsautoOptions(Options):
 
   def list(self, args=None):
     '''list tests'''
+    helptxt = '''ssauto list [TESTPACKAGE|TESTMODULE] 
+            [-v|--verbose][-h|--help][-d|--directory DIRECTORY]
+            [-p|--priority N][-m|--modules]'''
     try:
-      args = getopt.getopt(args, 'd:hp:v', 
+      args = getopt.getopt(args, 'd:hmp:v', 
               ['directory', 'help', 'priority', 'verbose'])
     except getopt.GetoptError as e:
       print(e)
-      print('list.help')
+      print(helptxt)
       sys.exit(2)
     # initialize variables.
     directory = TCASEDIR
     priority = 0
     verbose = False
+    listmodule = False
+
     for opt, arg in args[0]:
       if opt in ('-h', '--help'):
-        print('list.help')
+        print(helptxt)
         sys.exit(0)
       elif opt in ('-d', '--directory'):
         directory = arg
@@ -57,10 +63,14 @@ class SsautoOptions(Options):
         priority = arg
       elif opt in ('-v', '--verbose'):
         verbose = True
+      elif opt in ('-m', '--module'):
+        listmodule = True
 
 
-    for d in args[1]:
-      list_subclasses(BASETCASE, d)
+#    for d in args[1]:
+#      list_subclasses(BASETCASE, d)
+    test_module_names = get_module_names_by_path(directory)
+    print(test_module_names) 
 
   def createcase(self,args=None):
     pass

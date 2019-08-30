@@ -8,6 +8,7 @@ import pkgutil
 import sys
 import importlib
 import os
+import inspect
 
 def get_sub(pkg_name, sub_modules):
   '''get a list of all modules in pkg_name, sub_modules should be a empty list. '''
@@ -57,39 +58,12 @@ def get_module_names_by_path(path):
         _get_module(os.path.join(_path, md[1]), md[1]+'.', _names)
       else:
          module_names.append(md[1])
-  _get_module(path, prefix, module_names)
+  _get_module(path, '', module_names)
   return module_names
 
 
-
-def get_module_names_by_path__(path):
-  '''get a list of all modules in path'''
-  path = os.path.abspath(path)
-  module_names = []
-  try:
-    files = os.listdir(path)
-  except Exception as e:
-    print(type(e).__name__, e)
-    return []
-  for i in files:
-    if i[-3:] == '.py' or os.path.isdir(os.path.join(path,i)):
-      module_names.append(i)
-    elif i[0] != '_' and os.path.isdir(os.path.join(path,i)):
-      module_names.append(i)
-    else:
-      pass
-
-  return module_names
-
-def get_modules_by_path__(path):
-  '''get a list of all modules in path'''
-#  while path[-1] == '/':
-  path = os.path.abspath(path)
-  dpath = os.path.dirname(path)
-  bpath = os.path.basename(path)
-  sys.path.insert(0, dpath)
-  sub_modules = []
-  get_sub(bpath, sub_modules)
-  sys.path.pop(0)
-  return sub_modules
-
+def if_module_contain_subclass(module_obj, class_obj):
+  '''tell if module_obj contains subclass of class_obj, ignored class in submodules'''
+  namelist = dir(module_obj)
+  for n in namelist:
+   pass 

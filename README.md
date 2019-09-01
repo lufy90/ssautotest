@@ -16,6 +16,7 @@ ssauto run TESTMODULE|TESTPACKAGE
            [-H HOST][-h|--help][-d|--directory DIRECTORY]
            [-p|--priority N][-t|--test TEST]
 
+# 1st design:
 ssauto list [TESTPACKAGE|TESTMODULE] 
             [-v|--verbose][-h|--help][-d|--directory DIRECTORY]
             [-p|--priority N][-m|--module]
@@ -23,6 +24,26 @@ ssauto list [TESTPACKAGE|TESTMODULE]
             -m list all modules
             -v list object detailed doc
 
+# 2nd design:
+ssauto list : default list test modules and test calsses under DIRECTORY
+            [DIRECTORY]
+            [-h|--help][-m|--module MODULE]
+            [-t|--test TEST][-p|--priority N]
+            [-v|--verbose]
+
+  -m specify query test module
+  -M only list modules
+  -t specify query test class, list test class detail
+  -p only list test class with specified priority
+  -v list details, about module docs or test docs.
+
+
+ssauto run DIRECTORY
+           [-m|--module TESTMODULE]
+           [-t|--test TESTCASE]
+           [-H HOST]
+           [-p|--priority N]
+              
 ssauto create [-h|--help] TESTMODULE
 
 ssauto help

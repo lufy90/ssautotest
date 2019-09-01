@@ -9,6 +9,7 @@ import getopt
 import sys
 from setting import *
 from ssautolib import get_module_names_by_path
+from ssautolib import get_subclass_by_module_name
 
 
 class SsautoOptions(Options):
@@ -41,36 +42,49 @@ class SsautoOptions(Options):
             [-v|--verbose][-h|--help][-d|--directory DIRECTORY]
             [-p|--priority N][-m|--modules]'''
     try:
-      args = getopt.getopt(args, 'd:hmp:v', 
+      args = getopt.getopt(args, 'hm:p:t:v', 
               ['directory', 'help', 'priority', 'verbose'])
     except getopt.GetoptError as e:
       print(e)
       print(helptxt)
       sys.exit(2)
     # initialize variables.
-    directory = TCASEDIR
-    priority = 0
+    directories = []
+    for i in args[1]:
+      directories.extend(i.split(','))
+    directories = directories or ['.',]
+    test_modules = []
+    test_classes = []
+    priorities = []
     verbose = False
-    listmodule = False
+    
 
     for opt, arg in args[0]:
       if opt in ('-h', '--help'):
         print(helptxt)
         sys.exit(0)
-      elif opt in ('-d', '--directory'):
-        directory = arg
+      elif opt in ('-m', '--module'):
+        test_modules = arg.split(',')
       elif opt in ('-p', '--priority'):
-        priority = arg
+        priorities = arg.split(',')
+      elif opt in ('-t', '--test'):
+        test_classes = arg.split(',')
       elif opt in ('-v', '--verbose'):
         verbose = True
-      elif opt in ('-m', '--module'):
-        listmodule = True
 
 
 #    for d in args[1]:
 #      list_subclasses(BASETCASE, d)
-    test_module_names = get_module_names_by_path(directory)
-    print(test_module_names) 
+    for directory in directories:
+      if not os.path.isdir(directory):
+        print('No such directory: %s' % directoriy, file=sys.stderr)
+        sys.exit(2)  # perror 2: No such file or directory
+      test_module_names = get_module_names_by_path(directory)
+      for name in test_module_names:
+        print('%s' % name)
+        for test_cls in get_subclass_by_module_name(name, 
+          BASETCASE, path=directory):
+          print('\t\t%s' % test_cls.__name__)
 
   def createcase(self,args=None):
     pass

@@ -10,7 +10,7 @@ import sys,os
 from setting import *
 from ssautolib import get_module_names_by_path, get_modules_by_path
 from ssautolib import get_subclass_by_module_name, get_subclasses_in_module
-
+sys.path.insert(0, '/home/sb/projects/')
 
 class SsautoOptions(Options):
   '''ssauto command line options'''
@@ -83,14 +83,16 @@ class SsautoOptions(Options):
       for module in modules:
          tclasses = get_subclasses_in_module(module, BASETCASE)
          if tclasses:
-           pass
+           print('module:', module.__name__)
+           for tclass in tclasses:
+             print('class:', tclass.__name__)
           
-      test_module_names = get_module_names_by_path(directory)
-      for name in test_module_names:
-        print('%s' % name)
-        for test_cls in get_subclass_by_module_name(name, 
-          BASETCASE, path=directory):
-          print('\t\t%s' % test_cls.__name__)
+#      test_module_names = get_module_names_by_path(directory)
+#      for name in test_module_names:
+#        print('%s' % name)
+#        for test_cls in get_subclass_by_module_name(name, 
+#          BASETCASE, path=directory):
+#          print('\t\t%s' % test_cls.__name__)
 
   def createcase(self,args=None):
     pass

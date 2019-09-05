@@ -7,8 +7,11 @@
 #sys.path.insert(0, '..')
 #import base
 
+import sys
+sys.path.insert(0, '/home/sb/projects/')
+
 from ssautotest import test
 
 class A(test.Testcase):
-  pass
+  name = 'a'
 

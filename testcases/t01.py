@@ -7,8 +7,8 @@
 #sys.path.insert(0, '..')
 #import base
 
-from test import Testcase
+from ssautotest import test
 
-class A(Testcase):
+class A(test.Testcase):
   pass
 

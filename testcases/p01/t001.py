@@ -3,7 +3,7 @@
 # Author: lufy
 # Date: 20190901 10:13:31
 
-from test import Testcase
+from ssautotest import test
 
-class B(Testcase):
+class B(test.Testcase):
   pass

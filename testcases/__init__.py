@@ -1,2 +1,2 @@
-import test
-import setting
+#import test
+#import setting

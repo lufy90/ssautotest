@@ -25,7 +25,7 @@ ssauto list [TESTPACKAGE|TESTMODULE]
             -v list object detailed doc
 
 # 2nd design:
-ssauto list : default list test modules and test calsses under DIRECTORY
+ssauto list : default list test modules and test classes under DIRECTORY
             [DIRECTORY]
             [-h|--help][-m|--module MODULE]
             [-t|--test TEST][-p|--priority N]

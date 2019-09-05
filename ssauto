@@ -6,10 +6,10 @@
 
 from cmdmain import Main, Options
 import getopt
-import sys
+import sys,os
 from setting import *
-from ssautolib import get_module_names_by_path
-from ssautolib import get_subclass_by_module_name
+from ssautolib import get_module_names_by_path, get_modules_by_path
+from ssautolib import get_subclass_by_module_name, get_subclasses_in_module
 
 
 class SsautoOptions(Options):
@@ -77,8 +77,14 @@ class SsautoOptions(Options):
 #      list_subclasses(BASETCASE, d)
     for directory in directories:
       if not os.path.isdir(directory):
-        print('No such directory: %s' % directoriy, file=sys.stderr)
+        print('No such directory: %s' % directory, file=sys.stderr)
         sys.exit(2)  # perror 2: No such file or directory
+      modules = get_modules_by_path(directory)
+      for module in modules:
+         tclasses = get_subclasses_in_module(module, BASETCASE)
+         if tclasses:
+           pass
+          
       test_module_names = get_module_names_by_path(directory)
       for name in test_module_names:
         print('%s' % name)

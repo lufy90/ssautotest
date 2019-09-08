@@ -52,7 +52,7 @@ def get_module_names_by_path(path='.'):
   '''get a name list of all modules in path, none packages.'''
   if not os.path.isdir(path):
     print('No such directory: %s' % path, file=sys.stderr)
-    return -1
+    return None
 
   module_names = []
   def _get_module_name(_path, _prefix, _names):
@@ -69,7 +69,7 @@ def get_modules_by_path(path='.'):
 with __init__.py'''
   if not os.path.isdir(path):
     print('No such directory: %s' % path, file=sys.stderr)
-    return -1
+    return None
 
   pkg_path = os.path.join(path, '__init__.py')
   modules = []
@@ -94,6 +94,39 @@ with __init__.py'''
             '\nCannot import %s' % module_name, file=sys.stderr)
 
   return modules
+
+def get_module_by_path(name, path='.'):
+  '''get module-object by given path and name '''
+  if not os.path.isdir(path):
+    print('No such directory: %s' % path, file=sys.stderr)
+    return None
+
+  pkg_path = os.path.join(path, '__init__.py')
+  module = None
+  _pkg = 'package'
+
+  module_names = get_module_names_by_path(path)
+  if name not in module_names:
+    return module
+
+  try:
+    spec = importlib.util.spec_from_file_location(_pkg, pkg_path)
+    module = importlib.util.module_from_spec(spec)
+  except Exception as e:
+    print(type(e).__name__, ':', e,
+          '\nNot a valid package path: %s' % path, file=sys.stderr)
+    return module
+
+  sys.modules[_pkg] = module
+  imported_pkg = importlib.import_module(_pkg)
+  full_module_name = _pkg + '.' + name
+  try:
+    module = importlib.import_module(full_module_name, imported_pkg)
+  except Exception as e:
+    print(type(e).__name__, ':', e,
+          '\nCannot import %s' % module_name, file=sys.stderr)
+  return module
+
 
 def get_subclasses_in_module(module_obj, class_obj):
   '''get all subclasses of class_obj in module_obj'''

@@ -10,7 +10,8 @@ import sys,os
 from setting import *
 from ssautolib import get_module_names_by_path, get_modules_by_path
 from ssautolib import get_subclass_by_module_name, get_subclasses_in_module
-sys.path.insert(0, '/home/sb/projects/')
+from ssautolib import get_module_by_path
+
 
 class SsautoOptions(Options):
   '''ssauto command line options'''
@@ -41,9 +42,20 @@ class SsautoOptions(Options):
     helptxt = '''ssauto list [TESTPACKAGE|TESTMODULE] 
             [-v|--verbose][-h|--help][-d|--directory DIRECTORY]
             [-p|--priority N][-m|--modules]'''
+    helptxt = '''ssauto list [DIRECTORY]
+            [-h|--help][-m|--module MODULE]
+            [-t|--test TEST][-p|--priority N]
+            [-v|--verbose]
+
+  -m specify query test module
+  -M only list modules
+  -t specify query test class, list test class detail
+  -p only list test class with specified priority
+  -v list details, about module docs or test docs.
+'''
     try:
-      args = getopt.getopt(args, 'hm:p:t:v', 
-              ['directory', 'help', 'priority', 'verbose'])
+      args = getopt.getopt(args, 'hm:Mp:t:v', 
+              ['help', 'module', 'priority', 'test', 'verbose'])
     except getopt.GetoptError as e:
       print(e)
       print(helptxt)
@@ -53,7 +65,7 @@ class SsautoOptions(Options):
     for i in args[1]:
       directories.extend(i.split(','))
     directories = directories or ['.',]
-    test_modules = []
+    test_module_names = []
     test_classes = []
     priorities = []
     verbose = False
@@ -64,7 +76,7 @@ class SsautoOptions(Options):
         print(helptxt)
         sys.exit(0)
       elif opt in ('-m', '--module'):
-        test_modules = arg.split(',')
+        test_module_names = arg.split(',')
       elif opt in ('-p', '--priority'):
         priorities = arg.split(',')
       elif opt in ('-t', '--test'):
@@ -79,13 +91,20 @@ class SsautoOptions(Options):
       if not os.path.isdir(directory):
         print('No such directory: %s' % directory, file=sys.stderr)
         sys.exit(2)  # perror 2: No such file or directory
-      modules = get_modules_by_path(directory)
-      for module in modules:
-         tclasses = get_subclasses_in_module(module, BASETCASE)
-         if tclasses:
-           print('module:', module.__name__)
-           for tclass in tclasses:
-             print('class:', tclass.__name__)
+
+      if not test_module_names:
+        test_module_names = get_module_names_by_path(directory)
+      for module_name in test_module_names:
+        print('testmodule name: ', module_name)
+        module = get_module_by_path(module_name, directory)
+
+#      modules = get_modules_by_path(directory)
+#      for module in modules:
+        tclasses = get_subclasses_in_module(module, BASETCASE)
+        if tclasses:
+          print('module:', '.'.join(module.__name__.split('.')[1:]))
+          for tclass in tclasses:
+            print('class:', tclass.__name__)
           
 #      test_module_names = get_module_names_by_path(directory)
 #      for name in test_module_names:

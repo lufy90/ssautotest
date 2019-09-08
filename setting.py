@@ -7,7 +7,12 @@ from test import Testcase
 import os
 import sys
 
-BASETCASE=Testcase
+sys.path.insert(0, '/home/sb/projects/')
+
+from ssautotest import test
+BASETCASE=test.Testcase
+
+
 TCASEDIR='testcases'
 
 __all__ = ['BASETCASE', 'TCASEDIR']

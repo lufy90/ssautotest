@@ -95,7 +95,7 @@ class SsautoOptions(Options):
       if not test_module_names:
         test_module_names = get_module_names_by_path(directory)
       for module_name in test_module_names:
-        print('testmodule name: ', module_name)
+#        print('testmodule name: ', module_name)
         module = get_module_by_path(module_name, directory)
 
 #      modules = get_modules_by_path(directory)

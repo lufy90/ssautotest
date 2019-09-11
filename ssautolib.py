@@ -55,13 +55,19 @@ def get_module_names_by_path(path='.'):
     return None
 
   module_names = []
-  def _get_module_name(_path, _prefix, _names):
+  def _get_module_name(_path, _prefix):
+#    print('-- _get_modeule_name(%s, %s)' %(_path, _prefix))
+#    for debugging.
     for md in pkgutil.iter_modules(path=[_path], prefix=_prefix):
+#      print('----',md)  # for debugging
       if md[2]:
-        _get_module_name(os.path.join(_path, md[1]), md[1]+'.', _names)
+        _get_module_name(os.path.join(_path, md[1].split('.')[-1]), 
+                         md[1]+'.')
       else:
-         module_names.append(md[1])
-  _get_module_name(path, '', module_names)
+        module_names.append(md[1])
+        
+# _names.append(md[1])
+  _get_module_name(path, '')
   return module_names
 
 def get_modules_by_path(path='.'):

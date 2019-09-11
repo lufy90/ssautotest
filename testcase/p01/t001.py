@@ -3,10 +3,12 @@
 # Author: lufy
 # Date: 20190908 08:18:01
 
-import sys
-sys.path.insert(0,'/home/sb/projects')
+import sys,os
 
-from ssautotest import setting
+p = os.getcwd().split('ssautotest')[0]
+sys.path.insert(0,p)
 
-class E(setting.BASETCASE):
+from ssautotest import test
+
+class E(test.Testcase):
   pass

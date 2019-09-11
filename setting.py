@@ -7,7 +7,9 @@ from test import Testcase
 import os
 import sys
 
-sys.path.insert(0, '/home/sb/projects/')
+p = os.getcwd().split('ssautotest')[0]
+sys.path.insert(0,p)
+
 
 from ssautotest import test
 BASETCASE=test.Testcase

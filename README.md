@@ -68,3 +68,14 @@ PKG2.MODULE2
 PKG1.MODULE1 TEST1 TEST2 TEST3
 PKG2.MODULE2 TEST4 TEST5 TEST6
 ```
+
+
+Test engine design:
+Functions needed:
+1. run TESTCLASS
+2. get test status, result
+3. control test: 
+   a. if test not finished in specified time, then force stop
+   b. if test setup failed, then stop test and clean up
+   c. if test failed, stop test and clean up
+4. run clean up when test failed.

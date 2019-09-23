@@ -8,21 +8,24 @@ import time
 class Test():
     '''test class'''
     name = ''
-    start_time = ''
-    end_time = ''
     testcase = None
     host = None
   
     @property
-    def start(self):
-        self.start_time = time.time()
-    @start.setter
-    def start(self):
-    def end(self):
-        self.end_time = time.time()
+    def start_time_stamp(self):
+        return time.time()
+    @start_time_stamp.setter
+    def start_time_stamp(self, value):
+        raise TypeError("Can't set attribute.")
+        pass 
+    @start_time_stamp.deleter
+    def start_time_stamp(self):
+        raise AttributeError("Can't delete attribute.")
     def get_result(self):
         pass
 
+class Runingtest():
+    pass
 
 class Testcase():
-  pass
+    pass
